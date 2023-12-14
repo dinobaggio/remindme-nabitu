@@ -27,6 +27,10 @@ Route::put('/session', [AuthController::class, 'refreshAccessToken'])->middlewar
     'ability:'. TokenAbility::ISSUE_ACCESS_TOKEN->value
 ]);
 
-Route::prefix('reminders')->group(function() {
+Route::middleware('auth:sanctum', 'ability:'. TokenAbility::ACCESS_API->value)->prefix('reminders')->group(function() {
+    Route::get('/', [RemindersController::class, 'index']);
     Route::post('/', [RemindersController::class, 'create']);
-})->middleware('auth:sanctum', 'ability:'. TokenAbility::ACCESS_API->value);
+    Route::get('/{id}', [RemindersController::class, 'view']);
+    Route::put('/{id}', [RemindersController::class, 'update']);
+    Route::delete('/{id}', [RemindersController::class, 'delete']);
+});
