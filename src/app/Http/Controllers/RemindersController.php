@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Mail\RemindNotifEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RemindersController extends Controller
@@ -52,6 +54,8 @@ class RemindersController extends Controller
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
         ]);
+
+        $this->sendEmailRemind();
 
         return response()->json([
             'message' => 'Reminder created successfully', 
@@ -151,5 +155,10 @@ class RemindersController extends Controller
         $reminder->delete();
 
         return response()->json(['ok' => true]);
+    }
+
+    public function sendEmailRemind() {
+        $mailTo = 'dbaggio111@gmail.com';
+        Mail::to($mailTo)->send(new RemindNotifEmail());
     }
 }
