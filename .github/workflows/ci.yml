@@ -35,6 +35,7 @@ jobs:
     needs: setup-laravel
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       working-directory: ./src
       env:
