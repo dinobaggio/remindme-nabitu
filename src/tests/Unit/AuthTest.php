@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\User;
+use App\Enums\TokenAbility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Tests\CreatesApplication;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
+use App\Http\Requests\RefreshTokenRequest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class AuthTest extends TestCase
@@ -19,6 +21,7 @@ class AuthTest extends TestCase
     use DatabaseMigrations, CreatesApplication;
     protected $email = 'test@example.com';
     protected $password = 'password';
+    protected $controller;
 
     public function setUp(): void
     {
@@ -29,21 +32,18 @@ class AuthTest extends TestCase
             'email' => $this->email,
             'password' => Hash::make($this->password),
         ]);
+        $this->controller = new AuthController();
     }
 
     
     public function test_func_login(): void
     {
-        $controller = new AuthController();
         $mockedRequest = new LoginRequest([
             'email' => $this->email,
             'password' => $this->password,
         ]);
-        $mockedRequest->headers->add([
-            'Authorization' => 'Bearer your_token_here'
-        ]);
 
-        $result = $controller->login($mockedRequest);
+        $result = $this->controller->login($mockedRequest);
 
         $this->assertEquals(
             $result->original["data"]["user"]["email"],
@@ -59,9 +59,18 @@ class AuthTest extends TestCase
         $this->assertTrue(!!$result->original["data"]["user"]["name"]);
     }
 
-    // public function test_func_refreshToken()
-    // {
-    //     $user = Auth::loginUsingId(1);
-    //     dd($user->createToken('refresh_token')->accessToken);
-    // }
+    public function test_func_refreshToken()
+    {
+        $user = Auth::loginUsingId(1);
+        $mockedRequest = new RefreshTokenRequest();
+        $refreshToken = $user->createToken('refresh_token', [TokenAbility::ISSUE_ACCESS_TOKEN->value])->plainTextToken;
+        $mockedRequest->setUserResolver(function() use ($user) {
+            return $user;
+        });
+        $mockedRequest->headers->add([
+            'Authorization' => 'Bearer '. $refreshToken
+        ]);
+        $result = $this->controller->refreshAccessToken($mockedRequest);
+        $this->assertTrue(!!$result->original["data"]["access_token"]);
+    }
 }
