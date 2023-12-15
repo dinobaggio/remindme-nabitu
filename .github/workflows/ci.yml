@@ -32,6 +32,7 @@ jobs:
         mkdir -p database
         touch database/database.sqlite
   unit-test:
+    needs: setup-laravel
     runs-on: ubuntu-latest
     steps:
     - name: Execute tests (Unit and Feature tests) via PHPUnit
