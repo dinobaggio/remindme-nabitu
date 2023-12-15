@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Throwable;
 use App\Enums\TokenAbility;
+use Illuminate\Http\Response;
 use Illuminate\Auth\AuthenticationException;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -37,7 +38,7 @@ class Handler extends ExceptionHandler
                         'ok' => false,
                         'err' => 'ERR_INVALID_REFRESH_TOKEN',
                         'msg' => 'invalid refresh token'
-                    ], 401);
+                    ], Response::HTTP_UNAUTHORIZED);
                 }
             }
         });

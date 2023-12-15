@@ -27,9 +27,4 @@ class RefreshTokenRequest extends FormRequest
             //
         ];
     }
-
-    protected function failedAuthorization()
-    {
-        throw new AuthorizationException('Write your custom fail authorization message.');
-    }
 }
