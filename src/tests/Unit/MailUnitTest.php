@@ -21,7 +21,11 @@ class MailUnitTest extends TestCase
     public function test_send_email(): void
     {
         $mailTo = 'dbaggio111@gmai.com';
-        Mail::to($mailTo )->send(new RemindNotifEmail());
+        $content = new RemindNotifEmail(
+            $title = 'Reminder',
+            $description = 'Description'
+        );
+        Mail::to($mailTo)->send($content);
         $this->assertTrue(true);
     }
 }

@@ -38,7 +38,7 @@ class RemindersControllerTest extends TestCase
         $data = [
             'title' => 'Meeting with Bob',
             'description' => 'Discuss about new project related to new system',
-            'remind_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'remind_at' => Carbon::now()->addSeconds(20)->format('Y-m-d H:i:s'),
             'event_at' => Carbon::now()->addDays(2)->format('Y-m-d H:i:s'),
         ];
         $response = $this->postJson('/api/reminders', $data, [

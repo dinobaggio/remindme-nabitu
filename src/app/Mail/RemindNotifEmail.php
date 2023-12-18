@@ -14,12 +14,16 @@ class RemindNotifEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $title = '';
+    protected $description = '';
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($title = '', $description = '', $emailTo = '')
     {
-        //
+        $this->title = $title;
+        $this->description = $description;
     }
 
     /**
@@ -28,8 +32,8 @@ class RemindNotifEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: 'example@com.com',
-            subject: 'Remind Notif Email'
+            from: 'reminds@remind.ingat',
+            subject: $this->title
         );
     }
 
@@ -40,6 +44,10 @@ class RemindNotifEmail extends Mailable
     {
         return new Content(
             view: 'emails.remind',
+            with: [
+                'title' => $this->title,
+                'description' => $this->description,
+            ]
         );
     }
 
