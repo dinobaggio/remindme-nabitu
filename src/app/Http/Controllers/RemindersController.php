@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reminder;
+use App\Jobs\MyRabbitMQJob;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Jobs\EmailReminderJob;
+use App\Mail\RemindNotifEmail;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RemindersController extends Controller
@@ -52,6 +57,14 @@ class RemindersController extends Controller
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
         ]);
+
+        dispatch(
+            new EmailReminderJob(
+                $title = $reminder->title,
+                $description = $reminder->description,
+                $mailTo = $request->user()->email
+            )
+        )->delay(Carbon::createFromFormat('Y-m-d H:i:s', $reminder->remind_at));
 
         return response()->json([
             'message' => 'Reminder created successfully', 
@@ -151,5 +164,10 @@ class RemindersController extends Controller
         $reminder->delete();
 
         return response()->json(['ok' => true]);
+    }
+
+    public function sendEmailRemindNotif() {
+        $mailTo = 'dbaggio111@gmail.com';
+        Mail::to($mailTo)->send('emails.reminds');
     }
 }
