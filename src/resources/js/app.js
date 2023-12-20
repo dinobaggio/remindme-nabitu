@@ -7,7 +7,7 @@ import { createApp } from 'vue'
 import App from './App.vue';
 
 //import config router
-import router from './router'
+import router from './routes'
 
 //create App Vue
 const app = createApp(App);

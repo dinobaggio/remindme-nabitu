@@ -4,7 +4,7 @@ import Layout from '../components/layouts/layout.vue';
 
 <template>
     <Layout>
-        Login
+        <p class="">welcome</p>
     </Layout>
 </template>
 
