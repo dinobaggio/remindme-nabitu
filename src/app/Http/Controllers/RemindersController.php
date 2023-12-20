@@ -49,30 +49,24 @@ class RemindersController extends Controller
                 'err' => 'ERR_BAD_REQUEST',
                 'msg' => $validator->errors()
             ], Response::HTTP_BAD_REQUEST);
-        }
+        }  
 
-        $reminder = Reminder::create([
+        $data = Reminder::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
         ]);
 
-        dispatch(
-            new EmailReminderJob(
-                $title = $reminder->title,
-                $description = $reminder->description,
-                $mailTo = $request->user()->email
-            )
-        )->delay(Carbon::createFromFormat('Y-m-d H:i:s', $reminder->remind_at));
+        Reminder::remindNotif($data, $request->user()->email);
 
         return response()->json([
             'message' => 'Reminder created successfully', 
             'data' => [
-                'title' => $reminder->title,
-                'description' => $reminder->description,
-                'remind_at' => strtotime($reminder->remind_at),
-                'event_at' => strtotime($reminder->event_at),
+                'title' => $data->title,
+                'description' => $data->description,
+                'remind_at' => strtotime($data->remind_at),
+                'event_at' => strtotime($data->event_at),
             ]
         ], Response::HTTP_CREATED);
     }
@@ -94,6 +88,7 @@ class RemindersController extends Controller
         }
 
         $reminder = Reminder::find($id);
+        $prevRemindAt = $reminder->remind_at;
 
         if (!$reminder) {
             return response()->json([
@@ -109,6 +104,10 @@ class RemindersController extends Controller
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
         ]);
+
+        if ($prevRemindAt !== $reminder->remind_at) {
+            Reminder::remindNotif($reminder, $request->user()->email);
+        }
 
         return response()->json([
             'message' => 'Reminder updated successfully', 
@@ -164,10 +163,5 @@ class RemindersController extends Controller
         $reminder->delete();
 
         return response()->json(['ok' => true]);
-    }
-
-    public function sendEmailRemindNotif() {
-        $mailTo = 'dbaggio111@gmail.com';
-        Mail::to($mailTo)->send('emails.reminds');
     }
 }
