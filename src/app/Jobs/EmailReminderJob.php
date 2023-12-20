@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Reminder;
 use Illuminate\Bus\Queueable;
 use App\Mail\RemindNotifEmail;
 use Illuminate\Support\Facades\Mail;
@@ -14,17 +15,22 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 class EmailReminderJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $title = '';
-    protected $description = '';
+
     protected $mailTo = '';
+    protected $title;
+    protected $description;
+    protected $remindId;
+    protected $remindAt;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($title = '', $description = '', $mailTo = '')
+    public function __construct($title = '', $description = '', $remindId = '', $remindAt = '', $mailTo = '')
     {
         $this->title = $title;
         $this->description = $description;
+        $this->remindId = $remindId;
+        $this->remindAt = $remindAt;
         $this->mailTo = $mailTo;
     }
 
@@ -33,10 +39,14 @@ class EmailReminderJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $content = new RemindNotifEmail(
-            $title = $this->title,
-            $description = $this->description
-        );
-        Mail::to($this->mailTo)->send($content);
+        // check jika remind at reminder berubah maka jangan eksekusi
+        $currReminder = Reminder::find($this->remindId);
+        if (isset($currReminder->remind_at) && $currReminder->remind_at === $this->remindAt) {
+            $content = new RemindNotifEmail(
+                $title = $this->title,
+                $description = $this->description
+            );
+            Mail::to($this->mailTo)->send($content);
+        }
     }
 }

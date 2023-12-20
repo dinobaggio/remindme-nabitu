@@ -20,7 +20,7 @@ class RemindNotifEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($title = '', $description = '', $emailTo = '')
+    public function __construct($title = '', $description = '')
     {
         $this->title = $title;
         $this->description = $description;
