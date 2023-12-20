@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reminder;
+use App\Jobs\MyRabbitMQJob;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Jobs\EmailReminderJob;
+use App\Mail\RemindNotifEmail;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RemindersController extends Controller
@@ -44,22 +49,24 @@ class RemindersController extends Controller
                 'err' => 'ERR_BAD_REQUEST',
                 'msg' => $validator->errors()
             ], Response::HTTP_BAD_REQUEST);
-        }
+        }  
 
-        $reminder = Reminder::create([
+        $data = Reminder::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
         ]);
 
+        Reminder::remindNotif($data, $request->user()->email);
+
         return response()->json([
             'message' => 'Reminder created successfully', 
             'data' => [
-                'title' => $reminder->title,
-                'description' => $reminder->description,
-                'remind_at' => strtotime($reminder->remind_at),
-                'event_at' => strtotime($reminder->event_at),
+                'title' => $data->title,
+                'description' => $data->description,
+                'remind_at' => strtotime($data->remind_at),
+                'event_at' => strtotime($data->event_at),
             ]
         ], Response::HTTP_CREATED);
     }
@@ -81,6 +88,7 @@ class RemindersController extends Controller
         }
 
         $reminder = Reminder::find($id);
+        $prevRemindAt = $reminder->remind_at;
 
         if (!$reminder) {
             return response()->json([
@@ -96,6 +104,10 @@ class RemindersController extends Controller
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
         ]);
+
+        if ($prevRemindAt !== $reminder->remind_at) {
+            Reminder::remindNotif($reminder, $request->user()->email);
+        }
 
         return response()->json([
             'message' => 'Reminder updated successfully', 

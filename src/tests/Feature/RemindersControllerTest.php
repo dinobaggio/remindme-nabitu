@@ -38,7 +38,7 @@ class RemindersControllerTest extends TestCase
         $data = [
             'title' => 'Meeting with Bob',
             'description' => 'Discuss about new project related to new system',
-            'remind_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'remind_at' => Carbon::now()->addSeconds(2)->format('Y-m-d H:i:s'),
             'event_at' => Carbon::now()->addDays(2)->format('Y-m-d H:i:s'),
         ];
         $response = $this->postJson('/api/reminders', $data, [
@@ -57,6 +57,7 @@ class RemindersControllerTest extends TestCase
             ]);
 
         $this->assertDatabaseHas('reminders', $data);
+        sleep(5);
     }
 
     /** @test */
@@ -97,7 +98,7 @@ class RemindersControllerTest extends TestCase
         $data = [
             'title' => 'Updated Title',
             'description' => 'Updated Description',
-            'remind_at' => now()->addDay(),
+            'remind_at' => Carbon::now()->addSeconds(5)->format('Y-m-d H:i:s'),
             'event_at' => now()->addWeek(),
         ];
 
@@ -121,6 +122,7 @@ class RemindersControllerTest extends TestCase
             'title' => 'Updated Title',
             'description' => 'Updated Description',
         ]);
+        sleep(5);
     }
 
     /** @test */
