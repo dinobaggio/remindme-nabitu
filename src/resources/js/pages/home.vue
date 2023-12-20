@@ -4,7 +4,9 @@ import Layout from '../components/layouts/layout.vue';
 
 <template>
     <Layout>
-        <p class="">welcome</p>
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <p class="">welcome</p>
+        </div>
     </Layout>
 </template>
 
