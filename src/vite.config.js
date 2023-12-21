@@ -3,7 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-    base: '/',
+    base: '/remindme-nabitu/',
     test: {
         environment: 'happy-dom',
     },
