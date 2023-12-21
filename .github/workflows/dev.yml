@@ -43,4 +43,12 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test --testsuite=Feature
+    - name: Install NPM
+      working-directory: ./src
+      run: npm run install
+    - name: FE Test
+      working-directory: ./src
+      run: npm run test
+    
+
     
