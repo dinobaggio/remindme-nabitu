@@ -20,8 +20,16 @@ test('test required form login', async () => {
   wrapper.get('[name="password"]').setValue('')
   wrapper.get('[type="submit"]').trigger('submit')
 
-  await sleep(1000)
+  await sleep(500)
   
   expect(wrapper.get('ul').text()).toContain('email required')
   expect(wrapper.get('ul').text()).toContain('password required')
+})
+
+test('test login success', async () => {
+  const wrapper = mount(Login)
+  wrapper.get('[name="email"]').setValue('alice@mail.com')
+  wrapper.get('[name="password"]').setValue('123456')
+  wrapper.get('[type="submit"]').trigger('submit')
+  expect(wrapper.emitted().submit).toBeTruthy()
 })

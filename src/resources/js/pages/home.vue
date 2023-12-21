@@ -5,7 +5,7 @@ import Layout from '../components/layouts/layout.vue';
 <template>
     <Layout>
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <p class="">welcome</p>
+            <p class="">list reminders</p>
         </div>
     </Layout>
 </template>

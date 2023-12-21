@@ -1,37 +1,52 @@
 <script setup>
-import { ref } from 'vue';
-import Layout from '../components/layouts/layout.vue';
+import { ref } from 'vue'
+import authService from '../services/authService'
+import { useToast } from "vue-toastification"
+import handleApiError from '../libs/handleApiError'
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const errors = ref([])
 const email = ref("")
 const password = ref("")
 
-const validateEmail = (email) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-};
-
-function login() {}
-function submit(e) {
-    let valueErrors = errors.value
-
-    if (!email.value) {
-        valueErrors.push('email required')
+async function login({ email, password }) {
+    try {
+        const res = await authService.login({ email, password })
+        const { access_token, refresh_token, user } = res.data.data
+        const toast = useToast()
+        toast.success(`Login success Selamat datang ${user.name}`, {
+            timeout: 2000
+        })
+        localStorage.setItem('access_token', access_token)
+        localStorage.setItem('refresh_token', refresh_token)
+        router.push('/')
+    } catch (err) {
+        handleApiError(err)
     }
-    if (!email.value) {
-        valueErrors.push('password required')
-    }
+}
 
-    if (valueErrors.length > 0) {
-        errors.value = valueErrors
-    } else {
-        // login()
-    }
-    
+async function submit(e) {
     e.preventDefault()
+
+    try {
+        let valueErrors = errors.value
+
+        if (!email.value) {
+            valueErrors.push('email required')
+        }
+        if (!email.value) {
+            valueErrors.push('password required')
+        }
+
+        if (valueErrors.length > 0) {
+            errors.value = valueErrors
+        } else {
+            await login({ email: email.value, password: password.value })
+        }
+    } catch (err) {
+        // err
+    }
 }
 </script>
 
