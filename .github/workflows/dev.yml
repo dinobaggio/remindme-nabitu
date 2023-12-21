@@ -61,6 +61,7 @@ jobs:
         working-directory: ./src
       - name: Test
         run: LARAVEL_BYPASS_ENV_CHECK=1 npm run test
+        working-directory: ./src
     
 
     
