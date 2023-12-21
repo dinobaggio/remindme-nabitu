@@ -42,7 +42,7 @@ jobs:
   vite-build:
     name: Build
     runs-on: ubuntu-latest
-    defults:
+    defaults:
       run:
         working-directory: ./src
     steps:
