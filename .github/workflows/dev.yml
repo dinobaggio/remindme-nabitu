@@ -45,7 +45,7 @@ jobs:
       run: php artisan test --testsuite=Feature
     - name: Install NPM
       working-directory: ./src
-      run: npm run install
+      run: npm install
     - name: FE Test
       working-directory: ./src
       run: npm run test
