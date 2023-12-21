@@ -1,6 +1,9 @@
 import './bootstrap';
 import '../css/app.css';
 import { createApp } from 'vue'
+import Toast from "vue-toastification";
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
 
 
 //import component App
@@ -16,3 +19,9 @@ const app = createApp(App);
 app.use(router);
 
 app.mount('#app');
+
+const options = {
+    
+};
+
+app.use(Toast, options);
