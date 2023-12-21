@@ -48,7 +48,7 @@ jobs:
       run: npm install
     - name: FE Test
       working-directory: ./src
-      run: npm run test
+      run: LARAVEL_BYPASS_ENV_CHECK=1 npm run test
     
 
     
