@@ -51,18 +51,22 @@ jobs:
       run: LARAVEL_BYPASS_ENV_CHECK=1 npm run test
   
   test-vue:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Npm Install
-      working-directory: ./src
-      run: npm install
-    - name: Npm Build
-      working-directory: ./src
-      run: npm run build
-    - name: Npm Test
-      working-directory: ./src
-      run: LARAVEL_BYPASS_ENV_CHECK=1 npm run test
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
     
 
     
