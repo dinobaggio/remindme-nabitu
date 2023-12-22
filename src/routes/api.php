@@ -26,6 +26,7 @@ Route::put('/session', [AuthController::class, 'refreshAccessToken'])->middlewar
     'auth.rt:sanctum',
     'ability:'. TokenAbility::ISSUE_ACCESS_TOKEN->value
 ]);
+Route::get('/csrf', [AuthController::class, 'getCsrf']);
 
 Route::middleware('auth:sanctum', 'ability:'. TokenAbility::ACCESS_API->value)->prefix('reminders')->group(function() {
     Route::get('/', [RemindersController::class, 'index']);

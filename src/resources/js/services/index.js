@@ -7,6 +7,7 @@ export default function newAxios(isAuth = false) {
     }
 
     const instance = axios.create({
+        baseURL: '/api',
         headers,
     });
 

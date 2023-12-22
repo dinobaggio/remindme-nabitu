@@ -1,15 +1,24 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import authService from '../services/authService'
 import { useToast } from "vue-toastification"
 import handleApiError from '../libs/handleApiError'
 import { useRouter } from 'vue-router';
+import { LOCALSTORAGE_KEY } from '../libs/constants';
+
+defineProps({
+    loadingValue: {
+        type: Boolean,
+        default: true
+    }
+})
 
 const router = useRouter()
 const errors = ref([])
 const errLogin = ref("")
 const email = ref("")
 const password = ref("")
+const loading = ref(true)
 
 async function login({ email, password }) {
     try {
@@ -19,13 +28,12 @@ async function login({ email, password }) {
         toast.success(`Login success Selamat datang ${user.name}`, {
             timeout: 2000
         })
-        localStorage.setItem('access_token', access_token)
-        localStorage.setItem('refresh_token', refresh_token)
+        localStorage.setItem(LOCALSTORAGE_KEY.ACCESS_TOKEN, access_token)
+        localStorage.setItem(LOCALSTORAGE_KEY.REFRESH_TOKEN, refresh_token)
         router.push('/')
     } catch (err) {
-        handleApiError(err)
+        handleApiError(err, router)
         if (err.response) {
-            console.log(err.response?.data?.msg)
             errLogin.value = err.response?.data?.msg
         }
     }
@@ -53,10 +61,19 @@ async function submit(e) {
         // err
     }
 }
+
+onMounted(function () {
+    const accessToken = localStorage.getItem('access_token')
+    const refreshToken = localStorage.getItem('refresh_token')
+    if (accessToken && refreshToken) {
+        router.push('/')
+    }
+    loading.value = false
+})
 </script>
 
 <template>
-    <section class="bg-gray-50 dark:bg-gray-900">
+    <section v-if="!loading" class="bg-gray-50 dark:bg-gray-900">
         <div class="flex flex-col items-center justify-center mx-auto md:h-screen lg:py-0">
             <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                 <img class="w-32" src="https://nabitu.id/img/nabitu-logo/nabitu_logo-with-text.png" alt="logo">    
@@ -66,7 +83,7 @@ async function submit(e) {
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Sign in to your account
                     </h1>
-                    <form class="space-y-4 md:space-y-6" @submit.prevent="submit">
+                    <form class="space-y-4 md:space-y-6" @submit="submit">
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                             <input v-model="email" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com">

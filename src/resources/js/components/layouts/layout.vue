@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { LOCALSTORAGE_KEY } from '../../libs/constants';
 
 const router = useRouter()
 const accessToken = ref(null)
@@ -8,14 +9,15 @@ const refreshToken = ref(null)
 const loading = ref(true)
 
 function logout() {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
+    
+    localStorage.removeItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+    localStorage.removeItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
     router.push('/login')
 }
 
 onMounted(async () => {
-    accessToken.value = localStorage.getItem('access_token')
-    refreshToken.value = localStorage.getItem('refresh_token')
+    accessToken.value = localStorage.getItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+    refreshToken.value = localStorage.getItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
 
     if (!accessToken.value && !refreshToken.value) {
         await router.push('/login')

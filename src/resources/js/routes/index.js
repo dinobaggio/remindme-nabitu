@@ -13,6 +13,11 @@ const routes = [
         name: 'login',
         component: Login
     },
+    {
+        path: '/reminders/:id',
+        name: 'reminders.detail',
+        component: Home
+    }
 ]
 
 //create router
