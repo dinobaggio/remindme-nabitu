@@ -3,15 +3,8 @@ import { onMounted, ref } from 'vue'
 import authService from '../services/authService'
 import { useToast } from "vue-toastification"
 import handleApiError from '../libs/handleApiError'
-import { useRouter } from 'vue-router';
-import { LOCALSTORAGE_KEY } from '../libs/constants';
-
-defineProps({
-    loadingValue: {
-        type: Boolean,
-        default: true
-    }
-})
+import { useRouter } from 'vue-router'
+import { LOCALSTORAGE_KEY } from '../libs/constants'
 
 const router = useRouter()
 const errors = ref([])
