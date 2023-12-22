@@ -4,6 +4,7 @@ import authService from '../services/authService'
 import { useToast } from "vue-toastification"
 import handleApiError from '../libs/handleApiError'
 import { useRouter } from 'vue-router';
+import { LOCALSTORAGE_KEY } from '../libs/constants';
 
 defineProps({
     loadingValue: {
@@ -27,8 +28,8 @@ async function login({ email, password }) {
         toast.success(`Login success Selamat datang ${user.name}`, {
             timeout: 2000
         })
-        localStorage.setItem('access_token', access_token)
-        localStorage.setItem('refresh_token', refresh_token)
+        localStorage.setItem(LOCALSTORAGE_KEY.ACCESS_TOKEN, access_token)
+        localStorage.setItem(LOCALSTORAGE_KEY.REFRESH_TOKEN, refresh_token)
         router.push('/')
     } catch (err) {
         handleApiError(err, router)

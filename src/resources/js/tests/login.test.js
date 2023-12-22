@@ -31,7 +31,6 @@ test('test form login', async () => {
   await wrapper.get('[name="password"]').setValue('123456')
   await wrapper.get('[type="submit"]').trigger('submit')
   await wrapper.find('form').trigger('submit')
-  await wrapper.vm.$nextTick()
   
   expect(wrapper.element.querySelector('ul')).toBe(null)
 })

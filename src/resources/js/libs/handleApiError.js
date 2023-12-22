@@ -1,5 +1,6 @@
 import { useToast } from "vue-toastification"
 import authService from "../services/authService"
+import { LOCALSTORAGE_KEY } from "./constants"
 
 export default async function handleApiError(err, router, reCall = async () => {}) {
     const toast = useToast()
@@ -8,22 +9,22 @@ export default async function handleApiError(err, router, reCall = async () => {
         const toast = useToast()
 
         if (status === 401 ) {
-            const refreshToken = localStorage.getItem('refresh_token')
+            const refreshToken = localStorage.getItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
             try {
                 const res = await authService.refreshToken(refreshToken)
                 if (res?.data?.data) {
-                    localStorage.setItem('access_token', res?.data?.data?.access_token)
+                    localStorage.setItem(LOCALSTORAGE_KEY.ACCESS_TOKEN, res?.data?.data?.access_token)
                     await reCall()
                 }
             } catch (errRes) {
                 if (errRes?.response?.status === 401) {
-                    const accessToken = localStorage.getItem('access_token')
+                    const accessToken = localStorage.getItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
                     if (accessToken) {
                         toast.error(errRes?.response?.data?.msg)
                     }
 
-                    localStorage.removeItem('access_token')
-                    localStorage.removeItem('refresh_token')
+                    localStorage.removeItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+                    localStorage.removeItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
                     router.push('/login')
                 } else {
                     toast.error('something went wrong')
