@@ -1,9 +1,6 @@
-import { mount, shallowMount } from "@vue/test-utils";
-import { expect, test , vi } from 'vitest'
+import { mount } from "@vue/test-utils";
+import { expect, test  } from 'vitest'
 import Login from "../pages/login.vue";
-import libs from '../libs'
-
-const { sleep } = libs
 
 test('test login page', async () => {
   const wrapper = mount(Login)
@@ -21,8 +18,6 @@ test('test required form login', async () => {
   wrapper.get('[name="password"]').setValue('')
   wrapper.get('[type="submit"]').trigger('submit')
   await wrapper.vm.$nextTick();
-
-  console.log(wrapper.element.querySelector('ul'))
 
   expect(wrapper.get('ul').text()).toContain('email required')
   expect(wrapper.get('ul').text()).toContain('password required')
