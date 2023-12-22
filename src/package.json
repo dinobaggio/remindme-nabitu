@@ -21,6 +21,9 @@
     "dependencies": {
         "flowbite": "^2.2.1",
         "happy-dom": "^6.0.4",
+        "install": "^0.13.0",
+        "npm": "^10.2.5",
+        "oh-vue-icons": "^1.0.0-rc3",
         "vue": "^3.3.13",
         "vue-router": "^4.2.5",
         "vue-toastification": "^2.0.0-rc.5"
