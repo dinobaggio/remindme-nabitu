@@ -32,8 +32,8 @@ export default async function handleApiError(err, router, reCall = async () => {
             }
         } else if (data?.msg) {
             toast.error(data.msg)
+            return
         }
-        return
     }
     toast.error('something went wrong')
 }
