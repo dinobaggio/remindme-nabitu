@@ -22,7 +22,7 @@ class RemindersController extends Controller
 
         $limit = $request->input('limit', 10);
 
-        $reminders = Reminder::orderBy('remind_at', 'asc')
+        $reminders = Reminder::orderBy('updated_at', 'desc')
             ->take($limit)
             ->get();
 

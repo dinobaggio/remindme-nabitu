@@ -5,7 +5,18 @@ import Toast from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
 import { addIcons, OhVueIcon } from "oh-vue-icons";
-import { FaRegularBell, BiTrash, BiPencil, MdAddalertOutlined } from "oh-vue-icons/icons"
+import { 
+    FaRegularBell, 
+    BiTrash, 
+    BiArrowLeft, 
+    BiPencil, 
+    MdAddalertOutlined,
+    BiCalendar
+} from "oh-vue-icons/icons"
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 
 //import component App
@@ -14,18 +25,23 @@ import App from './App.vue';
 //import config router
 import router from './routes'
 
-addIcons(FaRegularBell, BiTrash, BiPencil, MdAddalertOutlined)
+addIcons(
+    FaRegularBell, 
+    BiTrash, 
+    BiPencil, 
+    MdAddalertOutlined,
+    BiArrowLeft,
+    BiCalendar
+)
 
 //create App Vue
 const app = createApp(App);
 
-//gunakan "router" di Vue dengan plugin "use"
-app.use(router);
+app.component("v-icon", OhVueIcon)
+app.component('VueDatePicker', VueDatePicker);
+app.use(router)
+app.use(Toast, {})
+app.use(VueSweetalert2)
 
-app.mount('#app');
+app.mount('#app')
 
-app.component("v-icon", OhVueIcon);
-
-const options = {};
-
-app.use(Toast, options);

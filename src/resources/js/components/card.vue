@@ -10,7 +10,7 @@ defineProps({
 
 <template>
     <div class="mb-4 flex flex-row items-center space-x-4 p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <v-icon name="fa-regular-bell" scale="3" />
+        <v-icon name="fa-regular-bell" scale="2" />
         <div class="w-full">
             <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ title }}</h5>
             <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">{{ description }}</p>
@@ -22,8 +22,8 @@ defineProps({
             </router-link>
         </div>
         <div>
-            <v-icon name="bi-pencil" scale="2" />
-            <v-icon name="bi-trash" scale="2" />
+            <router-link class="cursor-pointer" :to="{ name: 'reminders.update', params: { id } }"><v-icon name="bi-pencil" scale="1.4" /></router-link>
+            <v-icon name="bi-trash" scale="1.4" />
         </div>
     </div>
 </template>

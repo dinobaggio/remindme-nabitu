@@ -14,8 +14,9 @@ export default async function handleApiError(err, router, reCall = async () => {
                 const res = await authService.refreshToken(refreshToken)
                 if (res?.data?.data) {
                     localStorage.setItem(LOCALSTORAGE_KEY.ACCESS_TOKEN, res?.data?.data?.access_token)
-                    await reCall()
+                    await reCall(true)
                 }
+                return
             } catch (errRes) {
                 if (errRes?.response?.status === 401) {
                     const accessToken = localStorage.getItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)

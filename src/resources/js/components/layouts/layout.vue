@@ -8,13 +8,6 @@ const accessToken = ref(null)
 const refreshToken = ref(null)
 const loading = ref(true)
 
-function logout() {
-    
-    localStorage.removeItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
-    localStorage.removeItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
-    router.push('/login')
-}
-
 onMounted(async () => {
     accessToken.value = localStorage.getItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
     refreshToken.value = localStorage.getItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
@@ -25,13 +18,36 @@ onMounted(async () => {
     loading.value = false
 })
 </script>
+<script>
+export default {
+  methods: {
+    logout() {
+      // Use sweetalert2
+        this.$swal.fire({
+            title: "Apakah anda yakin ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then(confirm => {
+            if (confirm.isConfirmed) {
+                localStorage.removeItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
+                localStorage.removeItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
+                this.$router.push('/login')
+            }
+        })
+    },
+  },
+};
+</script>
 
 <template>
     <div v-if="!loading">
         <nav class="bg-white border-gray-200 dark:bg-gray-900">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="https://nabitu.id/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="https://nabitu.id/img/nabitu-logo/nabitu_logo-with-text.png" class="h-8" alt="Nabitu" />
+                    <img src="https://nabitu.id/img/nabitu-logo/nabitu_logo-with-text.png" class="h-12" alt="Nabitu" />
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
                 </a>
                 <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">

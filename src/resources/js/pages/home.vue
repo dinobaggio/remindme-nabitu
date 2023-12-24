@@ -24,7 +24,6 @@ onMounted(async () => {
     await getReminders()
     loading.value = false
 })
-
 </script>
 
 <template>
@@ -35,8 +34,8 @@ onMounted(async () => {
             </div>
             <div class="mt-16" v-else>
                 <div class="flex flex-row items-center space-x-4 mb-8">
-                    <h2 class="w-full text-4xl font-extrabold dark:text-white mb-3">list reminders</h2>
-                    <v-icon name="md-addalert-outlined" scale="2" />
+                    <h2 class="w-full text-4xl font-extrabold dark:text-white mb-3">Reminders</h2>
+                    <router-link :to="{ name: 'reminders.create' }"><v-icon class="cursor-pointer" name="md-addalert-outlined" scale="2" /></router-link>
                 </div>
                 <div v-for="(remind) of reminders">
                     <Card 
@@ -46,8 +45,6 @@ onMounted(async () => {
                     />
                 </div>
             </div>
-            
-            
         </div>
     </Layout>
 </template>
