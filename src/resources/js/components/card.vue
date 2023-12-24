@@ -4,7 +4,8 @@ defineProps({
     description: String,
     remindAt: String,
     eventAt: String,
-    id: Number
+    id: Number,
+    deleteReminder: Function
 })
 </script>
 
@@ -23,7 +24,7 @@ defineProps({
         </div>
         <div>
             <router-link class="cursor-pointer" :to="{ name: 'reminders.update', params: { id } }"><v-icon name="bi-pencil" scale="1.4" /></router-link>
-            <v-icon name="bi-trash" scale="1.4" />
+            <v-icon @click="() => deleteReminder(id)" class="cursor-pointer" name="bi-trash" scale="1.4" />
         </div>
     </div>
 </template>

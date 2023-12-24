@@ -3,13 +3,15 @@ import Layout from '../components/layouts/layout.vue'
 import Card from '../components/card.vue'
 import Loading from '../components/loading.vue'
 import reminderService from '../services/reminderService';
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import handleApiError from '../libs/handleApiError';
+import alertConfirm from '../libs/alertConfirm';
 
 const router = useRouter()
 const loading = ref(true)
 const reminders = ref([])
+const swal = inject('$swal')
 
 async function getReminders() {
     try {
@@ -17,6 +19,28 @@ async function getReminders() {
         reminders.value = res?.data?.data?.reminders
     } catch (err) {
         handleApiError(err, router, getReminders)
+    }
+}
+
+async function deleteReminder(id, fromCb = false) {
+    try {
+        let aConfrim = false
+        if (fromCb === false) {
+            aConfrim = await alertConfirm(swal)
+            aConfrim = aConfrim?.isConfirmed
+        } else if (fromCb === true) {
+            aConfrim = fromCb
+        }
+        if (aConfrim) {
+            await reminderService.destroy(id)
+            await swal.fire({
+                icon: 'success',
+                title: 'Success'
+            })
+            window.location.reload()
+        }
+    } catch (err) {
+        handleApiError(err, router, async (fromCb) => deleteReminder(id, fromCb))
     }
 }
 
@@ -42,6 +66,7 @@ onMounted(async () => {
                         :title="remind.title"
                         :description="remind.description"
                         :id="remind.id"
+                        :deleteReminder="deleteReminder"
                     />
                 </div>
             </div>
