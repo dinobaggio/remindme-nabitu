@@ -2,49 +2,45 @@ name: Laravel
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev", "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev", "main" ]
 
 jobs:
-  test-laravel:
+  laravel-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
         php-version: '8.2'
     - uses: actions/checkout@v3
     - name: Copy .env
-      working-directory: ./src
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      working-directory: ./src
       run: composer install --no-interaction
     - name: Generate key
-      working-directory: ./src
       run: php artisan key:generate
     - name: Directory Permissions
-      working-directory: ./src
       run: chmod -R 777 storage bootstrap/cache
     - name: Create Database
-      working-directory: ./src
       run: |
         mkdir -p database
         touch database/database.sqlite
     - name: Execute tests Unit
-      working-directory: ./src
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test --testsuite=Unit
     - name: Execute tests Feature
-      working-directory: ./src
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test --testsuite=Feature
-      
-  vite-build:
+  
+  vite-test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -64,4 +60,6 @@ jobs:
         run: npm run build
       - name: Test
         run: LARAVEL_BYPASS_ENV_CHECK=1 npm run test
+    
+
     
