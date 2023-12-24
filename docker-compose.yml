@@ -32,8 +32,8 @@ services:
     container_name: mysql
     ports:
       - 3306:3306
-    # volumes:
-    #   - ./mysql:/var/lib/mysql
+    volumes:
+      - ./docker/data-mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: nabitu
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
@@ -70,6 +70,15 @@ services:
     entrypoint: [ 'npm' ]
     networks:
       - remind_network
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: "rabbitmq"
+    environment:
+      - TZ=Asia/Jakarta
+    ports:
+      - "5672:5672" # Port RabbitMQ
+      - "15672:15672" # Port RabbitMQ Management Web UI
 
 networks:
   remind_network:
