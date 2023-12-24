@@ -1,3 +1,10 @@
+# RemindMe - How to run application
+
+```bash
+sh build.sh # build app and up docker compose
+sh migrate.sh # and then migrate database
+```
+
 # RemindMe - Laravel Challenge
 
 Welcome to Nabitu take home challenge!
