@@ -18,7 +18,7 @@ class RemindersController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user(); // Anda mungkin perlu menyesuaikan ini sesuai dengan model pengguna yang Anda gunakan
+        $user = Auth::user();
 
         $limit = $request->input('limit', 10);
 

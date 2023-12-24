@@ -10,14 +10,12 @@ test('test form reminders', () => {
             remindAt: null,
             eventAt: null,
             errors: [],
-            submit: () => {},
-            validate: () => {}
+            submit: () => {}
         }
     })
     wrapper.vm.$nextTick()
     
     expect(typeof wrapper.props().submit).toBe('function')
-    expect(typeof wrapper.props().validate).toBe('function')
     expect(Array.isArray(wrapper.props().errors)).toBe(true)
 })
 
