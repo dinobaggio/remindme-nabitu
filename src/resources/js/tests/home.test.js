@@ -10,7 +10,7 @@ test('test home page layout', async () => {
     await wrapper.vm.$nextTick()
     wrapper.vm.loading = false
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('h2').text()).toContain('list reminders')
+    expect(wrapper.find('h2').text()).toContain('Reminders')
     expect(wrapper.find('div').text()).contain('Logout')
     expect(wrapper.find('div').text()).contain('Home')
 })
@@ -24,7 +24,7 @@ test('test home contain reminders', async () => {
     const reminder = { id: 1, title: 'Reminder test', description: 'Description reminder' }
     wrapper.vm.reminders = [ reminder ]
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('h2').text()).toContain('list reminders')
+    expect(wrapper.find('h2').text()).toContain('Reminders')
     expect(wrapper.find('h5').text()).toContain(reminder.title)
     expect(wrapper.find('p').text()).toContain(reminder.description)
 })

@@ -3,15 +3,8 @@ import { onMounted, ref } from 'vue'
 import authService from '../services/authService'
 import { useToast } from "vue-toastification"
 import handleApiError from '../libs/handleApiError'
-import { useRouter } from 'vue-router';
-import { LOCALSTORAGE_KEY } from '../libs/constants';
-
-defineProps({
-    loadingValue: {
-        type: Boolean,
-        default: true
-    }
-})
+import { useRouter } from 'vue-router'
+import { LOCALSTORAGE_KEY } from '../libs/constants'
 
 const router = useRouter()
 const errors = ref([])
@@ -95,7 +88,7 @@ onMounted(function () {
                         <ul v-if="errors.length > 0" class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
                             <li class="mt-2 text-xs text-red-600 dark:text-red-400" v-for="(item) of errors"><span class="font-medium">Error!</span> {{ item }}</li>
                         </ul>
-                        <div data-error="errlogin">{{ errLogin }}</div>
+                        <div class="text-xs text-red-600" data-error="errlogin">{{ errLogin }}</div>
                         <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                     </form>
                 </div>

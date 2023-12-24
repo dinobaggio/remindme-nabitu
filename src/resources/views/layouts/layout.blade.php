@@ -15,4 +15,5 @@
         @yield('content')
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.js" integrity="sha512-BJ/5sR2hFxQTKin/55JQCcMTObShDBAmVjL/3NR/MVcrhyOazJjAgvROem03+HYyGw16SVdSfoWCFGr9syxAKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.js" integrity="sha512-SXIAZ3GkgehPtdX+LHC/dvisN+zDoC+iQSfKTetP/pImhGxBbOenhav9bnzyuEoCflr+XB431zkPEZgjXGqIOA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </html>
