@@ -7,7 +7,7 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  test-laravel:
+  laravel-test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -40,7 +40,7 @@ jobs:
         DB_DATABASE: database/database.sqlite
       run: php artisan test --testsuite=Feature
   
-  vite-build:
+  vite-test:
     runs-on: ubuntu-latest
     defaults:
       run:
