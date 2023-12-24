@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx.dockerfile
+    depends_on:
+      - php
+      - mysql
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - './src:/var/www/html'
+    networks:
+      - remind_network
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php.dockerfile
+    container_name: php
+    volumes:
+      - './src:/var/www/html'
+    networks:
+      - remind_network
+
+  mysql:
+    image: mysql:8.0.27
+    container_name: mysql
+    ports:
+      - 3306:3306
+    # volumes:
+    #   - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: nabitu
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - remind_network
+
+  composer:
+    image: composer:latest
+    container_name: composer
+    volumes:
+      - './src:/var/www/html'
+    working_dir: /var/www/html
+    networks:
+      - remind_network
+
+  artisan:
+    build:
+      context: .
+      dockerfile: docker/php.dockerfile
+    container_name: artisan
+    volumes:
+      - './src:/var/www/html'
+    working_dir: /var/www/html
+    entrypoint: [ 'php', 'artisan' ]
+    networks:
+      - remind_network
+
+  npm:
+    image: node:current-alpine
+    container_name: npm
+    volumes:
+      - './src:/var/www/html'
+    working_dir: /var/www/html
+    entrypoint: [ 'npm' ]
+    networks:
+      - remind_network
+
+networks:
+  remind_network:
+    driver: bridge
