@@ -1,5 +1,8 @@
 export default function newAxios(isAuth = false) {
-    const { axios } = window
+    let { axios } = window
+    if (!axios) {
+        axios = import('axios')
+    }
     const headers = {}
     if (isAuth === true) {
         const token = localStorage.getItem("access_token")

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
     pageTitle: String,
@@ -8,7 +8,6 @@ const props = defineProps({
     title: String,
     description: String,
     errors: Array,
-    validate: Function,
     submit: Function
 })
 
@@ -29,11 +28,15 @@ const format = (date) => {
   const hour = date.getHours();
   const minute = date.getMinutes();
 
-  return `${year}-${month}-${day} ${hour}:${minute}`;
+  return `${year}-${month}-${day} ${("0" + hour).slice(-2)}:${("0" + minute).slice(-2)}`;
 }
 
 watch(remindAtVal, newVal => emit("update:remind-at", newVal))
 watch(eventAtVal, newVal => emit("update:event-at", newVal))
+onMounted(() => {
+    remindAtVal.value = props.remindAt
+    eventAtVal.value = props.eventAt
+})
 </script>
 
 <template>

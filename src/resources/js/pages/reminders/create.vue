@@ -7,6 +7,8 @@ import ReminderForm from '../../components/reminderForm.vue';
 import reminderService from '../../services/reminderService';
 import { useRouter } from 'vue-router';
 import handleApiError from '../../libs/handleApiError';
+import validateReminders from '../../libs/validateReminders';
+import alertConfirm from '../../libs/alertConfirm';
 
 const router = useRouter()
 const loading = ref(true)
@@ -17,72 +19,24 @@ const title = ref(null)
 const description = ref(null)
 const swal = inject('$swal')
 
-async function alertConfirm() {
-    return swal.fire({
-        title: "Apakah anda yakin ?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes"
-    })
-}
-
-function validate({
-    titleVal,
-    descriptionVal,
-    remindAtVal,
-    eventAtVal,
-}) {
-    errors.value = []
-    const errVal = errors.value
-
-    if (!titleVal) {
-        errVal.push('title is required')
-    }
-    if (!descriptionVal) {
-        errVal.push('description is required')
-    }
-    if (!remindAtVal) {
-        errVal.push('remind_at is required')
-    }
-    if (!eventAtVal) {
-        errVal.push('event_at is required')
-    }
-
-    if (remindAtVal && eventAtVal && moment(remindAtVal).isAfter(eventAtVal)) {
-        errVal.push('remind_at not greater than event_at')
-    } else if (remindAtVal && moment(remindAtVal).isBefore(new Date())) {
-        errVal.push('remind_at is not before today')
-    } else if (eventAtVal && moment(eventAtVal).isBefore(new Date())) {
-        errVal.push('event_at is not before today')
-    }
-
-    
-    if (errVal.length > 0) {
-        return false
-    }
-
-    return true
-}
-
 async function submit(fromCb = false) {
     const titleVal = title.value
     const descriptionVal = description.value
     const remindAtVal = remindAt.value
     const eventAtVal = eventAt.value
-    const isValid = validate({
+
+    const isValid = validateReminders({
         titleVal,
         descriptionVal,
         remindAtVal,
         eventAtVal
-    })
+    }, errors)
 
     if (isValid) {
         try {
             let aConfrim = false
             if (typeof fromCb === 'object') {
-                aConfrim = await alertConfirm()
+                aConfrim = await alertConfirm(swal)
                 aConfrim = aConfrim?.isConfirmed
             } else if (typeof fromCb === 'boolean') {
                 aConfrim = fromCb
@@ -129,7 +83,6 @@ onMounted(async () => {
                     v-model:description="description"
                     v-model:remind-at="remindAt"
                     v-model:event-at="eventAt"
-                    :validate="validate"
                     :submit="submit"
                     :errors="errors"
                     pageTitle="Create"
