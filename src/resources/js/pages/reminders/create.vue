@@ -11,7 +11,7 @@ import handleApiError from '../../libs/handleApiError';
 const router = useRouter()
 const loading = ref(true)
 const errors = ref([])
-const remindAt = ref(new Date())
+const remindAt = ref(null)
 const eventAt = ref(null)
 const title = ref(null)
 const description = ref(null)
