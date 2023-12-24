@@ -28,7 +28,7 @@ const format = (date) => {
   const hour = date.getHours();
   const minute = date.getMinutes();
 
-  return `${year}-${month}-${day} ${("0" + hour).slice(-2)}:${("0" + minute).slice(-2)}`;
+  return `${year}-${month}-${day} ${("0" + hour).slice(-2)}:${("0" + minute).slice(-2)}:00`;
 }
 
 watch(remindAtVal, newVal => emit("update:remind-at", newVal))

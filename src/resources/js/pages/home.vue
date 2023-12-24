@@ -15,6 +15,7 @@ const swal = inject('$swal')
 
 async function getReminders() {
     try {
+        reminders.value = []
         const res = await reminderService.list()
         reminders.value = res?.data?.data?.reminders
     } catch (err) {
@@ -37,7 +38,9 @@ async function deleteReminder(id, fromCb = false) {
                 icon: 'success',
                 title: 'Success'
             })
-            window.location.reload()
+            loading.value = true
+            await getReminders()
+            loading.value = false
         }
     } catch (err) {
         handleApiError(err, router, async (fromCb) => deleteReminder(id, fromCb))
