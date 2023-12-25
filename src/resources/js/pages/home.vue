@@ -18,6 +18,7 @@ async function getReminders() {
         reminders.value = []
         const res = await reminderService.list()
         reminders.value = res?.data?.data?.reminders
+        console.log(reminders.value)
     } catch (err) {
         handleApiError(err, router, getReminders)
     }
@@ -64,10 +65,13 @@ onMounted(async () => {
                     <h2 class="w-full text-4xl font-extrabold dark:text-white mb-3">Reminders</h2>
                     <router-link :to="{ name: 'reminders.create' }"><v-icon class="cursor-pointer" name="md-addalert-outlined" scale="2" /></router-link>
                 </div>
-                <div v-for="(remind) of reminders">
+                <div v-for="(remind, i) of reminders">
                     <Card 
+                        :number="i+1"
                         :title="remind.title"
                         :description="remind.description"
+                        :remindAt="remind.remind_at"
+                        :eventAt="remind.event_at"
                         :id="remind.id"
                         :deleteReminder="deleteReminder"
                     />

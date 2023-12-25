@@ -17,7 +17,12 @@ async function refreshToken(token) {
     return instance.put('/api/session')
 }
 
+async function profile() {
+    return newAxios(true).get('/profile')
+}
+
 export default {
     login,
-    refreshToken
+    refreshToken,
+    profile
 }

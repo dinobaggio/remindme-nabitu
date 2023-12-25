@@ -12,6 +12,7 @@ import alertConfirm from '../../libs/alertConfirm';
 
 const router = useRouter()
 const loading = ref(true)
+const loadingForm = ref(false)
 const errors = ref([])
 const remindAt = ref(null)
 const eventAt = ref(null)
@@ -43,6 +44,7 @@ async function submit(fromCb = false) {
             }
 
             if (aConfrim) {
+                loadingForm.value = true
                 await reminderService.create({
                     title: titleVal,
                     description: descriptionVal,
@@ -53,9 +55,11 @@ async function submit(fromCb = false) {
                     title: 'Success',
                     icon: 'success'
                 })
+                loadingForm.value = false
                 router.push('/')
             }
         } catch(err) {
+            loadingForm.value = false
             handleApiError(err, router, submit)
         }
     }
@@ -83,6 +87,7 @@ onMounted(async () => {
                     v-model:description="description"
                     v-model:remind-at="remindAt"
                     v-model:event-at="eventAt"
+                    v-model:loading="loadingForm"
                     :submit="submit"
                     :errors="errors"
                     pageTitle="Create"

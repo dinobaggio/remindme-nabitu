@@ -48,7 +48,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function getCsrf() {
-        return response(csrf_token());
+    public function profile(Request $req) {
+        return response($req->user());
     }
 }
