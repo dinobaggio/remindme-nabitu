@@ -25,6 +25,7 @@ cp src/.env.example src/.env
 ```bash
 sh build.sh # build app and up docker compose
 sh migrate.sh # and then migrate database. make sure the docker container database is fully running
+sh worker.sh # run worker for excecute job mail notif
 # access application on localhost:80
 ```
 
