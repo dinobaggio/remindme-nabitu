@@ -1,0 +1,1 @@
+docker-compose -f worker.yml up -d
