@@ -21,6 +21,7 @@ services:
     build:
       context: .
       dockerfile: docker/php.dockerfile
+    image: remindme-laravel:latest
     container_name: php
     volumes:
       - './src:/var/www/html'
@@ -79,6 +80,22 @@ services:
     ports:
       - "5672:5672" # Port RabbitMQ
       - "15672:15672" # Port RabbitMQ Management Web UI
+    networks:
+      - remind_network
+  
+  worker:
+    restart: always
+    image: remindme-laravel:latest
+    command: php artisan queue:work
+    volumes:
+      - './src:/var/www/html'
+    working_dir: /var/www/html
+    networks:
+      - remind_network
+    depends_on:
+      - rabbitmq
+      - php
+      - nginx
 
 networks:
   remind_network:
