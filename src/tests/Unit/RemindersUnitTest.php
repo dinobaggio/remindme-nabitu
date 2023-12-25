@@ -25,7 +25,7 @@ class RemindersUnitTest extends TestCase
     {
         parent::setUp();
         $this->createApplication();
-        Artisan::call('migrate');
+        Artisan::call('migrate:fresh');
         User::factory()->create([
             'email' => $this->email,
             'password' => Hash::make($this->password),
