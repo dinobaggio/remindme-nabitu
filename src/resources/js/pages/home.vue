@@ -18,7 +18,6 @@ async function getReminders() {
         reminders.value = []
         const res = await reminderService.list()
         reminders.value = res?.data?.data?.reminders
-        console.log(reminders.value)
     } catch (err) {
         handleApiError(err, router, getReminders)
     }

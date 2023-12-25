@@ -58,7 +58,9 @@ class RemindersUnitTest extends TestCase
     public function test_can_update_reminder(): void
     {
         $user = Auth::loginUsingId(1);
-        $reminder = Reminder::factory()->create();
+        $reminder = Reminder::factory()->create([
+            'user_id' => $user->id
+        ]);
         $data = [
             'title' => 'Updated Title',
             'description' => 'Updated Description',

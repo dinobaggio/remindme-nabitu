@@ -21,7 +21,6 @@ class RemindersControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
         Artisan::call('migrate');
     }
 

@@ -20,7 +20,8 @@ class Reminder extends Model
         'title',
         'description',
         'remind_at',
-        'event_at'
+        'event_at',
+        'user_id'
     ];
 
     /**

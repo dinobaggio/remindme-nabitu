@@ -15,6 +15,7 @@ class MailUnitTest extends TestCase
     {
         parent::setUp();
         $this->createApplication();
+        
         // Artisan::call('migrate:fresh');
     }
 
