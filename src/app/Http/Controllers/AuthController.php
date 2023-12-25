@@ -47,4 +47,8 @@ class AuthController extends Controller
             ]
         ]);
     }
+
+    public function profile(Request $req) {
+        return response($req->user());
+    }
 }

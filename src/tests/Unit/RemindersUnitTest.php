@@ -57,7 +57,10 @@ class RemindersUnitTest extends TestCase
 
     public function test_can_update_reminder(): void
     {
-        $reminder = Reminder::factory()->create();
+        $user = Auth::loginUsingId(1);
+        $reminder = Reminder::factory()->create([
+            'user_id' => $user->id
+        ]);
         $data = [
             'title' => 'Updated Title',
             'description' => 'Updated Description',
@@ -65,6 +68,9 @@ class RemindersUnitTest extends TestCase
             'event_at' => now()->addWeek(),
         ];
         $mockedRequest = new Request($data);
+        $mockedRequest->setUserResolver(function() use ($user) {
+            return $user;
+        });
         $result = $this->controller->update($mockedRequest, $reminder->id);
 
         $this->assertTrue($result->original["message"] === "Reminder updated successfully");
