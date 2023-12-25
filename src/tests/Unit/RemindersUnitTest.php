@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Tests\CreatesApplication;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\TestCase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
@@ -26,7 +25,6 @@ class RemindersUnitTest extends TestCase
     {
         parent::setUp();
         $this->createApplication();
-        DB::connection()->getSchemaBuilder()->enableForeignKeyConstraints();
         Artisan::call('migrate:fresh');
         User::factory()->create([
             'email' => $this->email,

@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Artisan;
@@ -18,7 +17,6 @@ class AuthControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        DB::connection()->getSchemaBuilder()->enableForeignKeyConstraints();
         Artisan::call('migrate');
     }
 
