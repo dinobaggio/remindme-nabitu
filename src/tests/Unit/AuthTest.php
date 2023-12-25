@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Tests\CreatesApplication;
 use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,7 @@ class AuthTest extends TestCase
     {
         parent::setUp();
         $this->createApplication();
+        DB::connection()->getSchemaBuilder()->enableForeignKeyConstraints();
         Artisan::call('migrate:fresh');
         User::factory()->create([
             'email' => $this->email,

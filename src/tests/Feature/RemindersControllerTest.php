@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Reminder;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
@@ -21,7 +22,7 @@ class RemindersControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
+        DB::connection()->getSchemaBuilder()->enableForeignKeyConstraints();
         Artisan::call('migrate');
     }
 
