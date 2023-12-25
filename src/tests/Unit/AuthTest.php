@@ -27,7 +27,7 @@ class AuthTest extends TestCase
     {
         parent::setUp();
         $this->createApplication();
-        Artisan::call('migrate:fresh');
+        Artisan::call('migrate');
         User::factory()->create([
             'email' => $this->email,
             'password' => Hash::make($this->password),
