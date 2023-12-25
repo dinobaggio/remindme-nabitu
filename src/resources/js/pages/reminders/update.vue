@@ -18,6 +18,7 @@ const title = ref(null)
 const description = ref(null)
 const errors = ref([])
 const loading = ref(true)
+const loadingForm = ref(false)
 const swal = inject('$swal')
 
 async function getDetail(id) {
@@ -58,6 +59,7 @@ async function submit(fromCb = false) {
             }
 
             if (aConfrim) {
+                loadingForm.value = true
                 await reminderService.update(route.params.id, {
                     title: titleVal,
                     description: descriptionVal,
@@ -68,10 +70,11 @@ async function submit(fromCb = false) {
                     title: 'Success',
                     icon: 'success'
                 })
+                loadingForm.value = false
                 router.push('/')
             }
         } catch(err) {
-            console.error(err)
+            loadingForm.value = false
             handleApiError(err, router, submit)
         }
     }
@@ -100,6 +103,7 @@ onMounted(async () => {
                     v-model:description="description"
                     v-model:remind-at="remindAt"
                     v-model:event-at="eventAt"
+                    v-model:loading="loadingForm"
                     :submit="submit"
                     :errors="errors"
                     pageTitle="Update"

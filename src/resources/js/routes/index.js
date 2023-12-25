@@ -4,12 +4,18 @@ import ReminderUpdate from '../pages/reminders/update.vue'
 import ReminderCreate from '../pages/reminders/create.vue'
 import ReminderDetail from '../pages/reminders/detail.vue'
 import Login from '../pages/login.vue'
+import Profile from '../pages/profile.vue'
 //define a routes
 const routes = [
     {
         path: '/',
         name: 'home',
         component: Home
+    },
+    {
+        path: '/profile',
+        name: 'profile',
+        component: Profile
     },
     {
         path: '/login',
