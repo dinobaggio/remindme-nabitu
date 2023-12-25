@@ -25,7 +25,7 @@ class MailUnitTest extends TestCase
             $title = 'Reminder',
             $description = 'Description'
         );
-        Mail::to($mailTo)->send($content);
+        $mail = Mail::to($mailTo)->send($content);
         $this->assertTrue(true);
     }
 }
