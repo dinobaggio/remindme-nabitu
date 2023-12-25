@@ -12,7 +12,8 @@ import {
     BiPencil, 
     MdAddalertOutlined,
     BiCalendar,
-    WiRefreshAlt
+    WiRefreshAlt,
+    IoAlertCircleOutline
 } from "oh-vue-icons/icons"
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -33,7 +34,8 @@ addIcons(
     MdAddalertOutlined,
     BiArrowLeft,
     BiCalendar,
-    WiRefreshAlt
+    WiRefreshAlt,
+    IoAlertCircleOutline
 )
 
 //create App Vue

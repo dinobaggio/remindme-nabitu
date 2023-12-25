@@ -22,7 +22,7 @@ class RemindersController extends Controller
 
         $limit = $request->input('limit', 10);
 
-        $reminders = Reminder::orderBy('updated_at', 'desc')
+        $reminders = Reminder::where('user_id', $user->id)->orderBy('updated_at', 'desc')
             ->take($limit)
             ->get();
 
@@ -49,16 +49,18 @@ class RemindersController extends Controller
                 'err' => 'ERR_BAD_REQUEST',
                 'msg' => $validator->errors()
             ], Response::HTTP_BAD_REQUEST);
-        }  
+        } 
 
+        $user = $request->user();
         $data = Reminder::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
+            'user_id' => $user->id,
         ]);
 
-        Reminder::remindNotif($data, $request->user()->email);
+        Reminder::remindNotif($data, $user->email);
 
         return response()->json([
             'message' => 'Reminder created successfully', 
@@ -98,15 +100,18 @@ class RemindersController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
+        $user = $request->user();
+
         $reminder->update([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'remind_at' => $request->input('remind_at'),
             'event_at' => $request->input('event_at'),
+            'user_id' => $user->id
         ]);
 
         if ($prevRemindAt !== $reminder->remind_at) {
-            Reminder::remindNotif($reminder, $request->user()->email);
+            Reminder::remindNotif($reminder, $user->email);
         }
 
         return response()->json([
