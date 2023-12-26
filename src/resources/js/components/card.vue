@@ -5,14 +5,17 @@ const props = defineProps({
     number: Number,
     title: String,
     description: String,
-    remindAt: String,
-    eventAt: String,
+    remindAt: Number,
+    eventAt: Number,
     id: Number,
     deleteReminder: Function
 })
 
 function isNextNotif() {
-    return moment(props.remindAt, 'YYYY-MM-DD HH:mm:ss').isAfter(new Date())
+    return moment.unix(props.remindAt).isAfter(new Date())
+}
+function unixToDate(valUnix) {
+    return moment.unix(valUnix).format('YYYY-MM-DD HH:mm:ss')
 }
 </script>
 
@@ -22,8 +25,8 @@ function isNextNotif() {
         <div class="w-full">
             <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">#{{ number }} {{ title }} <v-icon v-if="!!isNextNotif()" title="next reminder" name="io-alert-circle-outline" scale="1.5" /></h5>
             <p class="font-normal text-gray-500 dark:text-gray-400">{{ description }}</p>
-            <p class="font-normal text-gray-500 dark:text-gray-400">Remind at: {{ remindAt }}</p>
-            <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Event at: {{ eventAt }}</p>
+            <p class="font-normal text-gray-500 dark:text-gray-400">Remind at: {{ unixToDate(remindAt) }}</p>
+            <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Event at: {{ unixToDate(eventAt) }}</p>
             <router-link class="inline-flex items-center text-blue-600 hover:underline" :to="{ name: 'reminders.detail', params: { id } }">
                 Detail
                 <svg class="w-3 h-3 ms-2.5 rtl:rotate-[270deg]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
