@@ -12,9 +12,11 @@ const errLogin = ref("")
 const email = ref("")
 const password = ref("")
 const loading = ref(true)
+const loadingForm = ref(false)
 
 async function login({ email, password }) {
     try {
+        loadingForm.value = true
         const res = await authService.login({ email, password })
         const { access_token, refresh_token, user } = res.data.data
         const toast = useToast()
@@ -25,6 +27,7 @@ async function login({ email, password }) {
         localStorage.setItem(LOCALSTORAGE_KEY.REFRESH_TOKEN, refresh_token)
         router.push('/')
     } catch (err) {
+        loadingForm.value = false
         handleApiError(err, router)
         if (err.response) {
             errLogin.value = err.response?.data?.msg
@@ -89,7 +92,10 @@ onMounted(function () {
                             <li class="mt-2 text-xs text-red-600 dark:text-red-400" v-for="(item) of errors"><span class="font-medium">Error!</span> {{ item }}</li>
                         </ul>
                         <div class="text-xs text-red-600" data-error="errlogin">{{ errLogin }}</div>
-                        <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                        <!-- <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button> -->
+                        <button :disabled="loadingForm" type="submit" class="flex items-center justify-between w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            <div /><div class="flex items-center"><v-icon v-if="loading" name="wi-refresh-alt" scale="2" class="animate-spin" /> <div>Sign in</div></div><div />
+                        </button>
                     </form>
                 </div>
             </div>

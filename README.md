@@ -2,8 +2,14 @@
 ### Run Command:
 
 ```bash
-docker-compose up -d --build
+docker-compose up -d --build 
 ```
+
+access application on port `localhost:8080`
+
+check queue rabbitMQ on port `localhost:15672`, username `guest` password `guest`
+
+check email on port `localhost:48025`
 
 # RemindMe - Laravel Challenge
 
