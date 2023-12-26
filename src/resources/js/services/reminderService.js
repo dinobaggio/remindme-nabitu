@@ -1,7 +1,9 @@
 import newAxios from "."
 
-async function list() {
-    return newAxios(true).get('/reminders')
+async function list(query) {
+    return newAxios(true).get('/reminders', {
+        params: query
+    })
 }
 
 async function create(data) {

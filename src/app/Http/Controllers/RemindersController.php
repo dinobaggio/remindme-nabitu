@@ -25,12 +25,21 @@ class RemindersController extends Controller
         $reminders = Reminder::where('user_id', $user->id)->orderBy('updated_at', 'desc')
             ->take($limit)
             ->get();
+        $reminders = collect($reminders)->map(function($item) {
+            return [
+                'id' => $item['id'],
+                'title' => $item['title'],
+                'description' => $item['description'],
+                'remind_at' => strtotime($item['remind_at']),
+                'event_at' => strtotime($item['event_at']),
+            ];
+        });
 
         return response()->json([
             'ok' => true,
             'data' => [
+                'limit' => (int)$limit,
                 'reminders' => $reminders,
-                'limit' => $limit,
             ]
         ]);
     }
