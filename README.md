@@ -5,7 +5,7 @@
 docker-compose up -d --build 
 ```
 
-access application on port `localhost:8080`
+access application on port `localhost:8000`
 
 check queue rabbitMQ on port `localhost:15672`, username `guest` password `guest`
 
