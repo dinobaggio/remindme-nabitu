@@ -28,8 +28,10 @@ export default async function handleApiError(err, router, reCall = async () => {
                     localStorage.removeItem(LOCALSTORAGE_KEY.REFRESH_TOKEN)
                     router.push('/login')
                 } else {
-                    toast.error('something went wrong')
+                    // toast.error('something went wrong')
+                    
                 }
+                return
             }
         } else if (data?.msg) {
             toast.error(data.msg)

@@ -70,11 +70,10 @@ async function submit(fromCb = false) {
                     title: 'Success',
                     icon: 'success'
                 })
-                loadingForm.value = false
                 router.push('/')
             }
         } catch(err) {
-            loadingForm.value = false
+            if (fromCb) loadingForm.value = false
             handleApiError(err, router, submit)
         }
     }
