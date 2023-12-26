@@ -13,7 +13,6 @@ const router = useRouter()
 async function getProfile() {
     try {
         const res = await authService.profile()
-        console.log(res.data)
         profile.value = res.data
     } catch (err) {
         handleApiError(err, router, getProfile)

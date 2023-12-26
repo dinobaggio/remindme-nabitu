@@ -1,31 +1,8 @@
 # RemindMe - How to run application
-
-### Minimum Requirement:
-```bash
-#php
-"php": "^8.1",
-"composer": "^2.5",
-# nodejs
-"npm": "^8.19",
-"node.js": "^16.20",
-```
-
-### Adjust credentials for email with what you have
-```bash
-cp src/.env.example src/.env
-# MAIL_MAILER=smtp
-# MAIL_HOST=sandbox.smtp.mailtrap.io
-# MAIL_PORT=2525
-# MAIL_USERNAME=c92b75a26d22ba
-# MAIL_PASSWORD=ce7b82ccc7343e
-```
-
 ### Run Command:
 
 ```bash
-sh build.sh # build app and up docker compose
-sh migrate.sh # and then migrate database. make sure the docker container database is fully running
-# access application on localhost:80
+docker-compose up -d --build
 ```
 
 # RemindMe - Laravel Challenge
