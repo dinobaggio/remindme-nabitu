@@ -1,3 +1,5 @@
+import { LOCALSTORAGE_KEY } from '../libs/constants'
+
 export default function newAxios(isAuth = false) {
     let { axios } = window
     if (!axios) {
@@ -5,7 +7,7 @@ export default function newAxios(isAuth = false) {
     }
     const headers = {}
     if (isAuth === true) {
-        const token = localStorage.getItem("access_token")
+        const token = localStorage.getItem(LOCALSTORAGE_KEY.ACCESS_TOKEN)
         headers["Authorization"] = `Bearer ${token}`
     }
 

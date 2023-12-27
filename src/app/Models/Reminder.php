@@ -36,7 +36,7 @@ class Reminder extends Model
 
     public static function remindNotif($data, $userEmail = '') {
         $delay = Carbon::createFromFormat('Y-m-d H:i:s', $data->remind_at, 'Asia/Jakarta');
-        // $delay->setTimezone('UTC');
+        
         dispatch(
             new EmailReminderJob(
                 $title = $data->title,
